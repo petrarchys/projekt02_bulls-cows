@@ -26,29 +26,48 @@ def vygeneruj_nahodne_cislo()->int:
     """
     return random.randint(1000, 9999)
 
-def zkontroluj_cislo(cislo: int)->bool:
+def zkontroluj_unikatnost_cisla(cislo: int)->bool:
     """
     Zkontroluje celé číslo, zda se v něm neopakují číslovky.
 
     Příklad:
-    >>> zkontroluj_cislo(1234) -> true
-    >>> zkontroluj_cislo(1122) -> false
+    >>> zkontroluj_unikatnost_cisla(1234) -> true
+    >>> zkontroluj_unikatnost_cisla(1122) -> false
     """
     return len(str(cislo)) == len(set(str(cislo)))
 
 def vrat_tajne_cislo()-> int:
     """
-    Vrátí 4místné celé číslo bez opakování číslovek 
+    Vrátí 4místné celé číslo bez opakování číslovek. 
     """
     while True:
         tajne_cislo = vygeneruj_nahodne_cislo()
-        print(f"{tajne_cislo=}")
-        if zkontroluj_cislo(tajne_cislo):
+        if zkontroluj_unikatnost_cisla(tajne_cislo):
             return tajne_cislo
+
+def over_vstup_uzivatele(vstup: str)-> bool:
+    """
+    Ověří vstup uživatele. Délka 4 čísla, nezačínat nulou.  
+    """
+    if len(vstup) != 4 or not vstup.isdigit() or vstup[0] == "0" or not zkontroluj_unikatnost_cisla(int(vstup)):
+        print(f"Chyba, zadejte 4 číslovky bez duplicit a nesmí začínat 0.")
+        return False
+    else:
+        return True
+
+def vrat_cislo_uzivatele()-> int:
+    """
+    Vrátí celé 4místné číslo zadané uživatelem.
+    """
+    while True:
+        vstup_uzivatele = input(">>>")
+        if over_vstup_uzivatele(vstup_uzivatele):
+            return int(vstup_uzivatele)
 
 def main():
     vypis_pozdrav()
-    print(vrat_tajne_cislo())
+    print(vrat_cislo_uzivatele())
+
 
 if __name__ == "__main__":
     main()
